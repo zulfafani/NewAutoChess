@@ -6,22 +6,25 @@ namespace AutoChess
 {
     public class GameManager
     {
-
-        private Player _players;
+        private List<IPlayer> _players; //implemented
         private Board _board;
         private List<IUnit> _units;
 
         public GameManager()
         {
+            _players = new List<IPlayer>(); //implemented
             _board = new Board();
             _units = new List<IUnit>();
         }
 
-        private Board chessBoard;
-
-        public void RunGame()
+        public void StartGame()
         {
-            Console.WriteLine("Auto Chess Game");
+            Console.WriteLine("Welcome to AutoChess Game!");
+
+            //Display Board
+            PrintBoard();
+
+            
 
             while (true)
             {
@@ -29,6 +32,7 @@ namespace AutoChess
                 Console.WriteLine("2. Remove a unit from the board");
                 Console.WriteLine("3. Print the board");
                 Console.WriteLine("4. Exit");
+                
 
                 Console.Write("Enter your choice: ");
                 int choice;
@@ -70,14 +74,12 @@ namespace AutoChess
                     {
                         Unit unit = _board.GetBoard()[square];
 
-                        Console.Write($"{unit.Name} ");
+                        //Console.Write($"{unit.Name} ");
                     }
                     else
                     {
 
-                        Console.Write("|__|");
-
-                        Console.Write("Empty ");
+                        Console.Write("[  ]");
 
                     }
                 }
@@ -87,16 +89,32 @@ namespace AutoChess
 
         }
 
-        void CreateUnit()
+        public void InvitePlayer(IPlayer player)
         {
-            // Create a unit
-            IUnit unit = new Unit("Knight", 100, 20, 10);
-
-            // Add the unit to the list
-            _units.Add(unit);
-
-            // Display unit status
-            unit.ShowProfileInfo();
+            _players.Add(player);
         }
+
+        public void CurrentPlayersInfo()
+        {
+            foreach (IPlayer player in _players)
+            {
+                player.ShowPlayerInfo();
+                Console.WriteLine();
+            }
+        }
+
+        public void AddUnit(IUnit unit)
+        {
+            _units.Add(unit);
+        }
+        public void DisplayAllUnitsInfo()
+        {
+            foreach (var unit in _units)
+            {
+                unit.ShowUnitInfo();
+                Console.WriteLine();
+            }
+        }
+
     }
 }

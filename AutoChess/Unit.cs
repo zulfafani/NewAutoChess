@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using AutoChess;
 
 namespace AutoChess
@@ -8,10 +9,10 @@ namespace AutoChess
     {
         //private string _id;
         //private string _name;
-        //private int _level;
-        //private int _exp;
+        private Race _race;
+        private Class _class;
+        private Quality _quality;
 
-        private string _name;
         private int _health;
         private int _attack;
         private int _price;
@@ -26,17 +27,19 @@ namespace AutoChess
         public int baseAttack { get; set; }
         public int maxAttack { get; set; }
 
-        public string Name { get { return _name; } }
+        //public string Name { get { return _name; } }
         public int Health { get { return _health; } }
         public int Attack { get { return _attack; } }
         public int Price { get { return _price; } }
 
-        public Unit(string name, int health, int attack, int price)
+        public Unit(Race race)
         {
-            _name = name;
-            _health = health;
-            _attack = attack;
-            _price = price;
+            _race = race;
+            _class = (Class)new Random().Next(Enum.GetValues(typeof(Class)).Length);
+            _quality = (Quality)new Random().Next(Enum.GetValues(typeof(Quality)).Length);
+            _health = 0;
+            _attack = 0;
+            _price = 0;
         }
 
         void IHealth.ModifyHealth(int amount)
@@ -48,9 +51,11 @@ namespace AutoChess
         {
             return HealthModified;
         }
-        public void ShowProfileInfo()
+        void IUnit.ShowUnitInfo()
         {
-            Console.WriteLine($"Unit: {Name}");
+            //Console.WriteLine($"Race: {Race}");
+            //Console.WriteLine($"Class: {Class}");
+            //Console.WriteLine($"Quality: {Quality}");
             Console.WriteLine($"Health: {Health}");
             Console.WriteLine($"Attack: {Attack}");
             Console.WriteLine($"Price: {Price}");

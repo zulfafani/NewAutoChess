@@ -9,8 +9,10 @@ namespace AutoChess
         //Player
         private string _id;
         private string _name;
+        private int _point;
+        private int _gold;
         private int _level;
-        private int _experience;
+        private int _exp;
 
         //Point
         public event Action<int> PointModified;
@@ -27,12 +29,14 @@ namespace AutoChess
         int startingLevel { get; set; }
         int maxLevel { get; set; }
 
-        public Player(string id, string name, int level, int experience)
+        public Player(string name)
         {
-            _id = id;
+            _id = GenerateRandomId();
             _name = name;
-            _level = level;
-            _experience = experience;
+            _point = 100;
+            _gold = 1;
+            _level = 1;
+            _exp = 0;
         }
 
         void IPoint.ModifyPoint(int amount)
@@ -50,12 +54,17 @@ namespace AutoChess
         }
         void IPlayer.ShowPlayerInfo()
         {
-
+            Console.WriteLine($"Player ID: {_id}");
+            Console.WriteLine($"Player Name: {_name}");
+            Console.WriteLine($"Player Point: {_point}");
+            Console.WriteLine($"Player Gold: ${_gold}");
+            Console.WriteLine($"Player Level: {_level}");
+            Console.WriteLine($"Player Exp: {_exp}");
         }
-        void IPlayer.ReadyBattle()
-        {
+        //void IPlayer.ReadyBattle()
+        //{
 
-        }
+        //}
         void IGold.ModifyGold(int amount)
         {
             startingGold += amount;
@@ -77,6 +86,19 @@ namespace AutoChess
         void ILevel.AmountUnitDeployed()
         {
 
+        }
+        public string GenerateRandomId()
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            char[] idChars = new char[6];
+
+            for (int i = 0; i < idChars.Length; i++)
+            {
+                idChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(idChars);
         }
     }
 }

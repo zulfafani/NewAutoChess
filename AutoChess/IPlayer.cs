@@ -9,6 +9,6 @@ namespace AutoChess
     public interface IPlayer
     {
         public void ShowPlayerInfo();
-        public void ReadyBattle();
+        //public void ReadyBattle();
     }
 }

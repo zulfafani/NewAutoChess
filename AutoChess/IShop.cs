@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AutoChess
 {
-    public interface IUnit
+    internal interface IShop
     {
-        public void ShowUnitInfo();
+
     }
 }

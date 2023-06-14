@@ -8,6 +8,7 @@ namespace AutoChess
     public class Board
     {
         private Dictionary<Square, Unit> _square;
+        private int unitType;
 
         public Board()
         {
@@ -62,9 +63,9 @@ namespace AutoChess
                     Console.Write("Unit Exp: ");
                 } while (!int.TryParse(Console.ReadLine(), out unitExp));
 
-                Unit unit = new Unit(unitId, unitType, unitLevel, unitExp);
+                //Unit unit = new Unit(unitId, unitType, unitLevel, unitExp);
 
-                _square[square] = unit;
+                //_square[square] = unit;
             }
         }
 
