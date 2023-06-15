@@ -59,7 +59,7 @@ namespace AutoChess
             Console.WriteLine($"Player Point: {_point}");
             Console.WriteLine($"Player Gold: ${_gold}");
             Console.WriteLine($"Player Level: {_level}");
-            Console.WriteLine($"Player Exp: {_exp}");
+            Console.WriteLine($"Player Exp: {_exp}/{_level}");
         }
         //void IPlayer.ReadyBattle()
         //{
@@ -67,7 +67,7 @@ namespace AutoChess
         //}
         void IGold.ModifyGold(int amount)
         {
-            startingGold += amount;
+            _gold += amount;
             GoldModified?.Invoke(amount);
         }
         Action<int> IGold.OnModifyGold()
@@ -97,7 +97,6 @@ namespace AutoChess
             {
                 idChars[i] = chars[random.Next(chars.Length)];
             }
-
             return new string(idChars);
         }
     }

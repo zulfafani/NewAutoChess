@@ -22,10 +22,5 @@ namespace AutoChess
         {
             return _col;
         }
-        //public bool IsEmpty()
-        //{
-            //return _row == 0 && _col == 0;
-            // Modify the condition based on definition of an empty square
-        //}
     }
 }

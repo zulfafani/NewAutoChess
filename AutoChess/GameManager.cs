@@ -6,94 +6,34 @@ namespace AutoChess
 {
     public class GameManager
     {
-        private List<IPlayer> _players; //implemented
-        private Board _board;
-        private List<IUnit> _units;
+        private List<IPlayer> _players;
+        private Dictionary<Square, List<IUnit>> _board;
+        private Dictionary<IPlayer, List<IUnit>> _units;
 
         public GameManager()
         {
-            _players = new List<IPlayer>(); //implemented
-            _board = new Board();
-            _units = new List<IUnit>();
+            _players = new List<IPlayer>();
+            _board = new Dictionary<Square, List<IUnit>>();
+            _units = new Dictionary<IPlayer, List<IUnit>>();
         }
 
         public void StartGame()
         {
             Console.WriteLine("Welcome to AutoChess Game!");
-
             //Display Board
-            PrintBoard();
-
-            
-
-            while (true)
-            {
-                Console.WriteLine("1. Place a unit on the board");
-                Console.WriteLine("2. Remove a unit from the board");
-                Console.WriteLine("3. Print the board");
-                Console.WriteLine("4. Exit");
-                
-
-                Console.Write("Enter your choice: ");
-                int choice;
-                int.TryParse(Console.ReadLine(), out choice);
-
-                switch (choice)
-                {
-                    case 1:
-
-                        _board.PlaceUnitOnSquare();
-                        break;
-                    case 2:
-                        _board.RemoveUnitFromSquare();
-                        break;
-                    case 3:
-                        PrintBoard();
-                        break;
-                    case 4:
-                        return;
-                    default:
-                        Console.WriteLine("Invalid choice. Try again.");
-                        break;
-                }
-            }
-        }
-
-        private void PrintBoard()
-        {
-            Console.WriteLine("Auto Chess Board:");
-
             for (int row = 1; row <= 8; row++)
             {
                 for (int col = 1; col <= 8; col++)
                 {
-                    Square square = new Square(row, col);
-
-
-                    if (_board.GetBoard().ContainsKey(square))
-                    {
-                        Unit unit = _board.GetBoard()[square];
-
-                        //Console.Write($"{unit.Name} ");
-                    }
-                    else
-                    {
-
-                        Console.Write("[  ]");
-
-                    }
+                    Console.Write("[   ]");
                 }
-
                 Console.WriteLine();
             }
-
         }
-
         public void InvitePlayer(IPlayer player)
         {
             _players.Add(player);
         }
-
         public void CurrentPlayersInfo()
         {
             foreach (IPlayer player in _players)
@@ -102,19 +42,64 @@ namespace AutoChess
                 Console.WriteLine();
             }
         }
-
-        public void AddUnit(IUnit unit)
+        public void AddUnit(IPlayer player, IUnit unit)
         {
-            _units.Add(unit);
+            if (!_units.ContainsKey(player))
+            {
+                _units[player] = new List<IUnit>();
+            }
+            _units[player].Add(unit);
         }
         public void DisplayAllUnitsInfo()
         {
-            foreach (var unit in _units)
+            foreach (var player in _units.Keys)
             {
-                unit.ShowUnitInfo();
-                Console.WriteLine();
+                player.ShowPlayerInfo();
+                Console.WriteLine("Units:");
+
+                foreach (var unit in _units[player])
+                {
+                    unit.ShowUnitInfo();
+                    Console.WriteLine();
+                }
             }
         }
 
+        public void AddUnitUpdate(IPlayer player, IUnit unit, Square square)
+        {
+            if (!_board.ContainsKey(square))
+                _board[square] = new List<IUnit>();
+
+            _units[player].Add(unit);
+            _board[square].Add(unit);
+        }
+        public void RemoveUnitUpdate(IPlayer player, IUnit unit, Square square)
+        {
+            if (_board.ContainsKey(square))
+            {
+                _board[square].Remove(unit);
+                _units[player].Remove(unit);
+            }
+        }
+        public void DisplayBoardUpdate()
+        {
+            Console.WriteLine("AutoChess Board:");
+
+            for (int row = 1; row <= 8; row++)
+            {
+                for (int col = 1; col <= 8; col++)
+                {
+                    if (AddUnitUpdate != null)
+                    {
+                        Console.Write("[Player1]");
+                    }
+                    else
+                    {
+                        Console.Write("[   ]");
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }

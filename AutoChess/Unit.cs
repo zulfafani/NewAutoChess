@@ -32,6 +32,24 @@ namespace AutoChess
         public int Attack { get { return _attack; } }
         public int Price { get { return _price; } }
 
+        public Race Race
+        {
+            get { return _race; }
+            set { _race = value; }
+        }
+
+        public Class Class
+        {
+            get { return _class; }
+            set { _class = value; }
+        }
+
+        public Quality Quality
+        {
+            get { return _quality; }
+            set { _quality = value; }
+        }
+
         public Unit(Race race)
         {
             _race = race;
@@ -39,7 +57,7 @@ namespace AutoChess
             _quality = (Quality)new Random().Next(Enum.GetValues(typeof(Quality)).Length);
             _health = 0;
             _attack = 0;
-            _price = 0;
+            _price = 1;
         }
 
         void IHealth.ModifyHealth(int amount)
@@ -53,13 +71,12 @@ namespace AutoChess
         }
         void IUnit.ShowUnitInfo()
         {
-            //Console.WriteLine($"Race: {Race}");
-            //Console.WriteLine($"Class: {Class}");
-            //Console.WriteLine($"Quality: {Quality}");
+            Console.WriteLine($"Race: {_race}");
+            Console.WriteLine($"Class: {_class}");
+            Console.WriteLine($"Quality: {_quality}");
             Console.WriteLine($"Health: {Health}");
             Console.WriteLine($"Attack: {Attack}");
-            Console.WriteLine($"Price: {Price}");
-            Console.WriteLine();
+            Console.WriteLine($"Price: ${Price}");
         }
         void IAttack.ModifyAttack(int amount)
         {

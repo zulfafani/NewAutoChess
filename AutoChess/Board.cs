@@ -7,98 +7,58 @@ namespace AutoChess
 {
     public class Board
     {
-        private Dictionary<Square, Unit> _square;
-        private int unitType;
+        private Dictionary<Square, IUnit> _board;
 
         public Board()
         {
-            _square = new Dictionary<Square, Unit>();
+            _board = new Dictionary<Square, IUnit>();
         }
 
-        public Square GetSquare()
+        public void AddUnit(Square square, IUnit unit)
         {
-            Console.Write("Enter the row of the square: ");
-            int row;
-            int.TryParse(Console.ReadLine(), out row);
-
-            Console.Write("Enter the column of the square: ");
-            int column;
-            int.TryParse(Console.ReadLine(), out column);
-
-            Square square = new Square(row, column);
-
-            return square;
+            _board[square] = unit;
         }
 
-        public void PlaceUnitOnSquare()
+        public void RemoveUnit(Square square)
         {
-            Console.WriteLine("Enter unit type and location (row, column) on the board:");
-            Console.WriteLine("Available unit types: Rook, Knight, Bishop, Queen, King, Pawn");
-            Console.WriteLine("Enter 'exit' to finish.");
-
-            while (true)
+            if (_board.ContainsKey(square))
             {
-                Console.Write("Unit type: ");
-                string unitType2 = Console.ReadLine();
+                _board.Remove(square);
+            }
+        }
 
-                if (unitType2 == "exit")
+        public void MoveUnit(Square sourceSquare, Square targetSquare)
+        {
+            if (_board.ContainsKey(sourceSquare))
+            {
+                IUnit unit = _board[sourceSquare];
+                _board.Remove(sourceSquare);
+                _board[targetSquare] = unit;
+            }
+        }
+
+        public void DisplayBoard()
+        {
+            Console.WriteLine("AutoChess Board:");
+
+            for (int row = 1; row <= 8; row++)
+            {
+                for (int col = 1; col <= 8; col++)
                 {
-                    break;
+                    Square square = new Square(col, row);
+
+                    if (_board.ContainsKey(square))
+                    {
+                        IUnit unit = _board[square];
+                        //Console.Write(value: $"[{unit.Race}-{unit.Class}] ");
+                    }
+                    else
+                    {
+                        Console.Write("[  ] ");
+                    }
                 }
-
-                Square square = GetSquare();
-
-                Console.Write("Unit ID: ");
-                string unitId = Console.ReadLine();
-
-                int unitLevel;
-                do
-                {
-                    Console.Write("Unit Level: ");
-                } while (!int.TryParse(Console.ReadLine(), out unitLevel));
-
-                int unitExp;
-                do
-                {
-                    Console.Write("Unit Exp: ");
-                } while (!int.TryParse(Console.ReadLine(), out unitExp));
-
-                //Unit unit = new Unit(unitId, unitType, unitLevel, unitExp);
-
-                //_square[square] = unit;
+                Console.WriteLine();
             }
-        }
-
-        public void RemoveUnitFromSquare()
-        {
-            Square square = GetSquare();
-
-            if (_square.ContainsKey(square))
-            {
-                _square.Remove(square);
-                Console.WriteLine("Unit removed from the square.");
-            }
-            else
-            {
-                Console.WriteLine("No unit found at the specified square.");
-            }
-        }
-
-        public Unit GetUnitFromSquare(Square square)
-        {
-            if (_square.ContainsKey(square))
-            {
-                return _square[square];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public Dictionary<Square, Unit> GetBoard()
-        {
-            return _square;
         }
     }
 }
